@@ -1,0 +1,48 @@
+@if (cargando) {
+  <p class="estado">Cargando tu sesión…</p>
+}
+
+@if (error) {
+  <div class="card card--error">
+    <p>No se pudo contactar al BFF (<code>/api/bff/me</code>).</p>
+    <p class="estado-detalle">Revisa que <code>ms-rutaexpress-bff</code> esté corriendo en localhost:8081.</p>
+  </div>
+}
+
+@if (yo) {
+  <section class="bienvenida">
+    <h1>Hola, {{ yo.name }}</h1>
+    <p class="bienvenida__sub">{{ yo.username }}</p>
+    <div class="roles">
+      @for (rol of yo.roles; track rol) {
+        <span class="badge">{{ rol }}</span>
+      }
+    </div>
+  </section>
+
+  <section class="grid-modulos">
+    @if (tieneRol('Admin') || tieneRol('Despachador') || tieneRol('Cliente')) {
+      <article class="card modulo">
+        <h3>📦 Envíos</h3>
+        <p>Crear, seguir y actualizar el estado de los envíos.</p>
+        <span class="modulo__estado">Próximamente — ms-rutaexpress-shipments</span>
+      </article>
+    }
+
+    @if (tieneRol('Admin') || tieneRol('Despachador')) {
+      <article class="card modulo">
+        <h3>🗂️ Catálogo</h3>
+        <p>Servicios de envío, tarifas y capacidad de flota.</p>
+        <span class="modulo__estado">Próximamente — ms-rutaexpress-catalog</span>
+      </article>
+    }
+
+    @if (tieneRol('Admin') || tieneRol('Auditor')) {
+      <article class="card modulo">
+        <h3>🔍 Auditoría</h3>
+        <p>Historial de eventos del sistema, solo lectura.</p>
+        <span class="modulo__estado">Próximamente</span>
+      </article>
+    }
+  </section>
+}

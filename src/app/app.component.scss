@@ -1,0 +1,91 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: var(--re-surface);
+  border-bottom: 1px solid var(--re-border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  &__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--re-primary);
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  &__name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--re-text);
+  }
+}
+
+.topbar__nav {
+  display: flex;
+  gap: 1.25rem;
+
+  a {
+    color: var(--re-text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+
+    &:hover { color: var(--re-primary); }
+  }
+}
+
+.topbar__session {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--re-bg);
+  border-radius: 999px;
+  font-size: 0.85rem;
+
+  &__name {
+    font-weight: 600;
+  }
+
+  &__role {
+    background: var(--re-accent);
+    color: #1e293b;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
+
+.app-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}

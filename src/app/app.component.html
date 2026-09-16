@@ -1,0 +1,33 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand__mark">RE</span>
+      <span class="brand__name">RutaExpress</span>
+    </div>
+
+    @if (isLoggedIn) {
+      <nav class="topbar__nav">
+        <a routerLink="/dashboard">Dashboard</a>
+      </nav>
+    }
+
+    <div class="topbar__session">
+      @if (isLoggedIn) {
+        <div class="user-chip">
+          <span class="user-chip__name">{{ displayName }}</span>
+          @for (rol of roles; track rol) {
+            <span class="user-chip__role">{{ rol }}</span>
+          }
+        </div>
+        <button class="btn btn--ghost" (click)="logout()">Cerrar sesión</button>
+      } @else {
+        <button class="btn btn--primary" (click)="login()">Iniciar sesión</button>
+      }
+    </div>
+  </header>
+
+  <main class="app-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+

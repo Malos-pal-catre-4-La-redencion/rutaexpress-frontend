@@ -1,0 +1,71 @@
+// ============================================================================
+// Tokens de diseño de RutaExpress — paleta y variables globales
+// ============================================================================
+:root {
+  --re-primary: #0f766e;      // teal — confianza / tecnología
+  --re-primary-dark: #0b5750;
+  --re-accent: #f59e0b;       // ámbar — estados "en ruta" / alertas
+  --re-bg: #f8fafc;
+  --re-surface: #ffffff;
+  --re-border: #e2e8f0;
+  --re-text: #1e293b;
+  --re-text-muted: #64748b;
+  --re-danger: #dc2626;
+  --re-success: #16a34a;
+  --re-radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--re-bg);
+  color: var(--re-text);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--re-radius);
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+
+  &:hover { opacity: 0.9; }
+  &:active { transform: scale(0.98); }
+}
+
+.btn--primary {
+  background: var(--re-primary);
+  color: white;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--re-text-muted);
+  border: 1px solid var(--re-border);
+}
+
+.card {
+  background: var(--re-surface);
+  border: 1px solid var(--re-border);
+  border-radius: var(--re-radius);
+  padding: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--re-primary);
+  color: white;
+}
