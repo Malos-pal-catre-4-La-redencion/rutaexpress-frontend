@@ -1,0 +1,89 @@
+h1 { margin: 0 0 1.5rem; font-size: 1.4rem; }
+
+.card--error {
+  border-color: var(--re-danger);
+  background: #fef2f2;
+  color: var(--re-danger);
+  margin-bottom: 1rem;
+}
+
+.estado-carga { color: var(--re-text-muted); }
+
+.seccion {
+  margin-bottom: 2.5rem;
+
+  &__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    h2 { margin: 0; font-size: 1.1rem; }
+  }
+}
+
+.formulario {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+  max-width: 420px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  label { font-size: 0.8rem; font-weight: 600; color: var(--re-text-muted); }
+
+  input, select {
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--re-border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+}
+
+.btn--small { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.servicio {
+  &--inactivo { opacity: 0.55; }
+
+  h3 { margin: 0 0 0.35rem; font-size: 1rem; }
+  p { color: var(--re-text-muted); font-size: 0.85rem; margin: 0 0 0.75rem; }
+
+  &__datos {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__tiempo { font-size: 0.8rem; color: var(--re-text-muted); }
+  &__estado-inactivo { font-size: 0.75rem; color: var(--re-danger); font-weight: 600; }
+}
+
+.badge--gris { background: var(--re-text-muted); }
+
+.tabla-wrapper { padding: 0; overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+
+th, td {
+  text-align: left;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--re-border);
+  white-space: nowrap;
+}
+
+th {
+  color: var(--re-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}

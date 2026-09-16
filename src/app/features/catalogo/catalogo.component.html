@@ -1,0 +1,125 @@
+<h1>🗂️ Catálogo</h1>
+
+@if (error) {
+  <div class="card card--error">{{ error }}</div>
+}
+
+@if (cargando) {
+  <p class="estado-carga">Cargando catálogo…</p>
+} @else {
+  <section class="seccion">
+    <div class="seccion__cabecera">
+      <h2>Servicios de envío</h2>
+      @if (esAdmin) {
+        <button class="btn btn--primary btn--small" (click)="mostrarFormServicio = !mostrarFormServicio">
+          {{ mostrarFormServicio ? 'Cancelar' : 'Nuevo servicio' }}
+        </button>
+      }
+    </div>
+
+    @if (mostrarFormServicio) {
+      <form class="card formulario" (ngSubmit)="crearServicio()">
+        <div class="campo">
+          <label>Nombre</label>
+          <input type="text" name="nombre" [(ngModel)]="nuevoServicio.nombre" required />
+        </div>
+        <div class="campo">
+          <label>Descripción</label>
+          <input type="text" name="descripcion" [(ngModel)]="nuevoServicio.descripcion" />
+        </div>
+        <div class="campo">
+          <label>Tarifa base (CLP)</label>
+          <input type="number" name="tarifaBase" [(ngModel)]="nuevoServicio.tarifaBase" required min="1" />
+        </div>
+        <div class="campo">
+          <label>Tiempo estimado (horas)</label>
+          <input type="number" name="tiempoEstimadoHoras" [(ngModel)]="nuevoServicio.tiempoEstimadoHoras" required min="1" />
+        </div>
+        <button class="btn btn--primary" type="submit">Crear servicio</button>
+      </form>
+    }
+
+    <div class="grid-cards">
+      @for (servicio of servicios; track servicio.id) {
+        <article class="card servicio" [class.servicio--inactivo]="!servicio.activo">
+          <h3>{{ servicio.nombre }}</h3>
+          <p>{{ servicio.descripcion }}</p>
+          <div class="servicio__datos">
+            <span class="badge">${{ servicio.tarifaBase }}</span>
+            <span class="servicio__tiempo">{{ servicio.tiempoEstimadoHoras }} h</span>
+          </div>
+          @if (esAdmin && servicio.activo) {
+            <button class="btn btn--ghost btn--small" (click)="desactivarServicio(servicio)">Desactivar</button>
+          }
+          @if (!servicio.activo) {
+            <span class="servicio__estado-inactivo">Inactivo</span>
+          }
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="seccion__cabecera">
+      <h2>Flota</h2>
+      <button class="btn btn--primary btn--small" (click)="mostrarFormVehiculo = !mostrarFormVehiculo">
+        {{ mostrarFormVehiculo ? 'Cancelar' : 'Nuevo vehículo' }}
+      </button>
+    </div>
+
+    @if (mostrarFormVehiculo) {
+      <form class="card formulario" (ngSubmit)="crearVehiculo()">
+        <div class="campo">
+          <label>Patente</label>
+          <input type="text" name="patente" [(ngModel)]="nuevoVehiculo.patente" required />
+        </div>
+        <div class="campo">
+          <label>Tipo</label>
+          <select name="tipo" [(ngModel)]="nuevoVehiculo.tipo">
+            @for (tipo of tiposVehiculo; track tipo) {
+              <option [value]="tipo">{{ tipo }}</option>
+            }
+          </select>
+        </div>
+        <div class="campo">
+          <label>Capacidad (kg)</label>
+          <input type="number" name="capacidadKg" [(ngModel)]="nuevoVehiculo.capacidadKg" required min="1" />
+        </div>
+        <button class="btn btn--primary" type="submit">Crear vehículo</button>
+      </form>
+    }
+
+    <div class="tabla-wrapper card">
+      <table>
+        <thead>
+          <tr>
+            <th>Patente</th>
+            <th>Tipo</th>
+            <th>Capacidad</th>
+            <th>Disponible</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (vehiculo of vehiculos; track vehiculo.id) {
+            <tr>
+              <td>{{ vehiculo.patente }}</td>
+              <td>{{ vehiculo.tipo }}</td>
+              <td>{{ vehiculo.capacidadKg }} kg</td>
+              <td>
+                <span class="badge" [class.badge--gris]="!vehiculo.disponible">
+                  {{ vehiculo.disponible ? 'Sí' : 'No' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn--ghost btn--small" (click)="cambiarDisponibilidad(vehiculo)">
+                  Marcar {{ vehiculo.disponible ? 'no disponible' : 'disponible' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+}

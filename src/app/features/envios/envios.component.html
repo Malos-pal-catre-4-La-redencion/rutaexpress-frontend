@@ -1,0 +1,80 @@
+<div class="cabecera">
+  <h1>📦 Envíos</h1>
+  <button class="btn btn--primary" (click)="mostrarFormulario = !mostrarFormulario">
+    {{ mostrarFormulario ? 'Cancelar' : 'Nuevo envío' }}
+  </button>
+</div>
+
+@if (error) {
+  <div class="card card--error">{{ error }}</div>
+}
+
+@if (mostrarFormulario) {
+  <form class="card formulario" (ngSubmit)="crearEnvio()">
+    <div class="campo">
+      <label>Remitente</label>
+      <input type="text" name="remitente" [(ngModel)]="nuevoEnvio.remitente" required />
+    </div>
+    <div class="campo">
+      <label>Destinatario</label>
+      <input type="text" name="destinatario" [(ngModel)]="nuevoEnvio.destinatario" required />
+    </div>
+    <div class="campo">
+      <label>Dirección de destino</label>
+      <input type="text" name="direccionDestino" [(ngModel)]="nuevoEnvio.direccionDestino" required />
+    </div>
+    <button class="btn btn--primary" type="submit" [disabled]="guardando">
+      {{ guardando ? 'Creando…' : 'Crear envío' }}
+    </button>
+  </form>
+}
+
+@if (cargando) {
+  <p class="estado-carga">Cargando envíos…</p>
+} @else if (envios.length === 0) {
+  <p class="estado-carga">Todavía no hay envíos registrados.</p>
+} @else {
+  <div class="tabla-wrapper card">
+    <table>
+      <thead>
+        <tr>
+          <th>Tracking</th>
+          <th>Remitente → Destinatario</th>
+          <th>Dirección</th>
+          <th>Estado</th>
+          @if (puedeGestionarEstados) {
+            <th>Acción</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (envio of envios; track envio.id) {
+          <tr>
+            <td class="tracking">{{ envio.trackingCode }}</td>
+            <td>{{ envio.remitente }} → {{ envio.destinatario }}</td>
+            <td>{{ envio.direccionDestino }}</td>
+            <td><span [class]="claseEstado(envio.estado)">{{ envio.estado }}</span></td>
+            @if (puedeGestionarEstados) {
+              <td>
+                @if (siguientesEstados(envio.estado).length > 0) {
+                  <div class="acciones">
+                    @for (siguiente of siguientesEstados(envio.estado); track siguiente) {
+                      <button
+                        class="btn btn--ghost btn--small"
+                        [disabled]="cambiosEnCurso.has(envio.id)"
+                        (click)="cambiarEstado(envio, siguiente)">
+                        → {{ siguiente }}
+                      </button>
+                    }
+                  </div>
+                } @else {
+                  <span class="sin-acciones">—</span>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

@@ -22,23 +22,23 @@
 
   <section class="grid-modulos">
     @if (tieneRol('Admin') || tieneRol('Despachador') || tieneRol('Cliente')) {
-      <article class="card modulo">
+      <a routerLink="/envios" class="card modulo">
         <h3>📦 Envíos</h3>
         <p>Crear, seguir y actualizar el estado de los envíos.</p>
-        <span class="modulo__estado">Próximamente — ms-rutaexpress-shipments</span>
-      </article>
+        <span class="modulo__estado">Entrar →</span>
+      </a>
     }
 
     @if (tieneRol('Admin') || tieneRol('Despachador')) {
-      <article class="card modulo">
+      <a routerLink="/catalogo" class="card modulo">
         <h3>🗂️ Catálogo</h3>
         <p>Servicios de envío, tarifas y capacidad de flota.</p>
-        <span class="modulo__estado">Próximamente — ms-rutaexpress-catalog</span>
-      </article>
+        <span class="modulo__estado">Entrar →</span>
+      </a>
     }
 
     @if (tieneRol('Admin') || tieneRol('Auditor')) {
-      <article class="card modulo">
+      <article class="card modulo modulo--deshabilitado">
         <h3>🔍 Auditoría</h3>
         <p>Historial de eventos del sistema, solo lectura.</p>
         <span class="modulo__estado">Próximamente</span>

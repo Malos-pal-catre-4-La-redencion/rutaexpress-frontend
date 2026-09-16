@@ -8,6 +8,12 @@
     @if (isLoggedIn) {
       <nav class="topbar__nav">
         <a routerLink="/dashboard">Dashboard</a>
+        @if (roles.includes('Admin') || roles.includes('Despachador') || roles.includes('Cliente')) {
+          <a routerLink="/envios">Envíos</a>
+        }
+        @if (roles.includes('Admin') || roles.includes('Despachador')) {
+          <a routerLink="/catalogo">Catálogo</a>
+        }
       </nav>
     }
 

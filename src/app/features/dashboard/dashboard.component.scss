@@ -38,6 +38,16 @@
 }
 
 .modulo {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.12);
+  }
+
   h3 {
     margin: 0 0 0.5rem;
     font-size: 1.05rem;
@@ -57,5 +67,14 @@
     padding: 0.2rem 0.55rem;
     border-radius: 999px;
     font-weight: 600;
+  }
+
+  &--deshabilitado {
+    cursor: default;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
   }
 }
