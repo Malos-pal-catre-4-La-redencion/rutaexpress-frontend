@@ -14,6 +14,9 @@
         @if (roles.includes('Admin') || roles.includes('Despachador')) {
           <a routerLink="/catalogo">Catálogo</a>
         }
+        @if (roles.includes('Admin')) {
+          <a routerLink="/admin">Administración</a>
+        }
       </nav>
     }
 

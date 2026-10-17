@@ -11,6 +11,7 @@ export interface Envio {
   remitente: string;
   destinatario: string;
   direccionDestino: string;
+  pesoKg: number | null;
   estado: EstadoEnvio;
   creadoEn: string;
   actualizadoEn: string;
@@ -20,6 +21,8 @@ export interface CrearEnvioRequest {
   remitente: string;
   destinatario: string;
   direccionDestino: string;
+  // null si el campo se deja vacío: así el backend responde 400 con su mensaje claro.
+  pesoKg: number | null;
 }
 
 /**

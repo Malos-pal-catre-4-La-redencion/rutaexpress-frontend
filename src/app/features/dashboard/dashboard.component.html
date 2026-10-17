@@ -37,6 +37,13 @@
       </a>
     }
 
+    @if (tieneRol('Admin')) {
+      <a routerLink="/admin" class="card modulo">
+        <h3>🐇 Administración</h3>
+        <p>Colas, exchanges y bindings de RabbitMQ.</p>
+        <span class="modulo__estado">Entrar →</span>
+      </a>
+    }
     @if (tieneRol('Admin') || tieneRol('Auditor')) {
       <article class="card modulo modulo--deshabilitado">
         <h3>🔍 Auditoría</h3>

@@ -1,12 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
+  CrearEnvioRequest,
   Envio,
   EnvioService,
   EstadoEnvio,
   SIGUIENTES_ESTADOS,
 } from '../../core/envio.service';
 import { SessionService } from '../../core/session.service';
+import { mensajeDeError } from '../../core/http-error';
 
 @Component({
   selector: 'app-envios',
@@ -24,7 +26,7 @@ export class EnviosComponent implements OnInit {
   error = '';
 
   mostrarFormulario = false;
-  nuevoEnvio = { remitente: '', destinatario: '', direccionDestino: '' };
+  nuevoEnvio: CrearEnvioRequest = { remitente: '', destinatario: '', direccionDestino: '', pesoKg: null };
   guardando = false;
 
   cambiosEnCurso = new Set<number>();
@@ -56,17 +58,18 @@ export class EnviosComponent implements OnInit {
   }
 
   crearEnvio(): void {
+    this.error = '';
     this.guardando = true;
     this.envioService.crear(this.nuevoEnvio).subscribe({
       next: () => {
         this.guardando = false;
         this.mostrarFormulario = false;
-        this.nuevoEnvio = { remitente: '', destinatario: '', direccionDestino: '' };
+        this.nuevoEnvio = { remitente: '', destinatario: '', direccionDestino: '', pesoKg: null };
         this.cargarEnvios();
       },
-      error: () => {
+      error: (e: unknown) => {
         this.guardando = false;
-        this.error = 'No se pudo crear el envío. Revisa los datos.';
+        this.error = mensajeDeError(e, 'No se pudo crear el envío. Revisa los datos.');
       },
     });
   }

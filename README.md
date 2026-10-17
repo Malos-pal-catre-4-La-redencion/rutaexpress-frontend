@@ -39,6 +39,30 @@ a través del BFF.
    `admin` puede crear o desactivar servicios.
 6. Cierra sesión y vuelve a entrar con otro usuario para comparar.
 
+## Nuevo (EP2): administración de RabbitMQ y peso del envío
+
+- **Administración** (`/admin`): pantalla solo para el rol `Admin` (el guard de ruta la
+  oculta al resto y el BFF devuelve 403 aunque alguien llame a la API directamente).
+  Permite crear y eliminar colas, exchanges y bindings, ver las métricas de una cola
+  (mensajes pendientes y consumidores) y aplicar la retención (`ttlMs`, `maxLength`,
+  `overflow`) y la DLQ al crear una cola. Los formularios **no** bloquean el envío con
+  campos vacíos a propósito: así se muestra en vivo el 400 con mensaje claro del
+  microservicio administrador y que no se crea nada.
+  El botón *Cargar ejemplo con DLQ* rellena una cola de demostración.
+- **Envíos**: el formulario ahora pide el **peso en kg** (obligatorio, mayor que 0). Es lo
+  que usa catalog para reservar un vehículo con capacidad suficiente. Si falta o es ≤ 0 se
+  muestra el mensaje del backend.
+- `apiUrl` (en `src/environments/environment.ts`) sigue apuntando al BFF local. Al desplegar,
+  se cambia por la URL del API Gateway.
+
+Cómo comprobar que todo compila:
+
+```bash
+npm install
+npm run build
+npm test        # requiere Chrome instalado
+```
+
 ## Estructura
 
 ```

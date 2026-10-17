@@ -1,0 +1,151 @@
+<div class="cabecera">
+  <h1>🐇 Administración de RabbitMQ</h1>
+</div>
+
+<p class="intro">
+  Crea y elimina colas, exchanges y bindings del clúster. Cada cambio se ve de inmediato en el
+  Management UI de RabbitMQ.
+</p>
+
+<section class="card resultados" aria-live="polite">
+  <h2>Resultado de las operaciones</h2>
+  @if (resultados.length === 0) {
+    <p class="vacio">Todavía no has ejecutado ninguna operación.</p>
+  } @else {
+    <ul>
+      @for (r of resultados; track $index) {
+        <li [class.ok]="r.ok" [class.fallo]="!r.ok">
+          <span class="resultado__hora">{{ r.hora }}</span>
+          <span class="resultado__marca">{{ r.ok ? '✔' : '✖' }}</span>
+          <span>{{ r.texto }}</span>
+        </li>
+      }
+    </ul>
+  }
+</section>
+
+<div class="grid">
+  <!-- ------------------------------------------------------------- colas -->
+  <section class="card">
+    <h2>Colas</h2>
+    <form class="formulario" (ngSubmit)="crearCola()">
+      <div class="campo">
+        <label for="cola-nombre">Nombre</label>
+        <input id="cola-nombre" type="text" name="colaNombre" [(ngModel)]="cola.nombre" placeholder="q.mi.cola" />
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label for="cola-ttl">Expiración de mensajes (ms)</label>
+          <input id="cola-ttl" type="number" name="colaTtl" [(ngModel)]="cola.ttlMs" placeholder="60000" />
+        </div>
+        <div class="campo">
+          <label for="cola-max">Máx. de mensajes</label>
+          <input id="cola-max" type="number" name="colaMax" [(ngModel)]="cola.maxLength" placeholder="1000" />
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="cola-overflow">Al llegar al máximo</label>
+        <select id="cola-overflow" name="colaOverflow" [(ngModel)]="cola.overflow">
+          <option value="">(por defecto: drop-head)</option>
+          @for (o of overflows; track o) {
+            <option [value]="o">{{ o }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label for="cola-dlx">Exchange de DLQ</label>
+          <input id="cola-dlx" type="text" name="colaDlx" [(ngModel)]="cola.deadLetterExchange" placeholder="rutaexpress.dlx" />
+        </div>
+        <div class="campo">
+          <label for="cola-dlrk">Routing key de DLQ</label>
+          <input id="cola-dlrk" type="text" name="colaDlrk" [(ngModel)]="cola.deadLetterRoutingKey" placeholder="mi.cola.dlq" />
+        </div>
+      </div>
+
+      <div class="acciones">
+        <button class="btn btn--primary" type="submit" [disabled]="ocupado">Crear cola</button>
+        <button class="btn btn--ghost" type="button" (click)="cargarEjemploConRetencion()">Cargar ejemplo con DLQ</button>
+        <button class="btn btn--ghost" type="button" (click)="limpiarCola()">Limpiar</button>
+      </div>
+    </form>
+
+    <hr />
+
+    <form class="formulario" (ngSubmit)="consultarCola()">
+      <div class="campo">
+        <label for="cola-existente">Consultar o eliminar una cola</label>
+        <input id="cola-existente" type="text" name="nombreCola" [(ngModel)]="nombreCola" placeholder="q.envio.comandos" />
+      </div>
+      <div class="acciones">
+        <button class="btn btn--primary" type="submit" [disabled]="ocupado">Ver métricas</button>
+        <button class="btn btn--danger" type="button" [disabled]="ocupado" (click)="eliminarCola()">Eliminar cola</button>
+      </div>
+    </form>
+
+    @if (estadoCola) {
+      <div class="metricas">
+        <div><strong>{{ estadoCola.mensajesPendientes }}</strong><span>mensajes pendientes</span></div>
+        <div><strong>{{ estadoCola.consumidores }}</strong><span>consumidores</span></div>
+      </div>
+    }
+  </section>
+
+  <div class="columna">
+    <!-- --------------------------------------------------------- exchanges -->
+    <section class="card">
+      <h2>Exchanges</h2>
+      <form class="formulario" (ngSubmit)="crearExchange()">
+        <div class="campo">
+          <label for="ex-nombre">Nombre</label>
+          <input id="ex-nombre" type="text" name="exNombre" [(ngModel)]="exchange.nombre" placeholder="rutaexpress.events" />
+        </div>
+        <div class="campo">
+          <label for="ex-tipo">Tipo</label>
+          <select id="ex-tipo" name="exTipo" [(ngModel)]="exchange.tipo">
+            @for (t of tiposExchange; track t) {
+              <option [value]="t">{{ t }}</option>
+            }
+          </select>
+        </div>
+        <button class="btn btn--primary" type="submit" [disabled]="ocupado">Crear exchange</button>
+      </form>
+
+      <hr />
+
+      <form class="formulario" (ngSubmit)="eliminarExchange()">
+        <div class="campo">
+          <label for="ex-eliminar">Eliminar un exchange</label>
+          <input id="ex-eliminar" type="text" name="nombreExchange" [(ngModel)]="nombreExchange" placeholder="rutaexpress.events" />
+        </div>
+        <button class="btn btn--danger" type="submit" [disabled]="ocupado">Eliminar exchange</button>
+      </form>
+    </section>
+
+    <!-- ---------------------------------------------------------- bindings -->
+    <section class="card">
+      <h2>Bindings</h2>
+      <form class="formulario" (ngSubmit)="crearBinding()">
+        <div class="campo">
+          <label for="bd-exchange">Exchange</label>
+          <input id="bd-exchange" type="text" name="bindingExchange" [(ngModel)]="binding.exchange" placeholder="rutaexpress.events" />
+        </div>
+        <div class="campo">
+          <label for="bd-cola">Cola</label>
+          <input id="bd-cola" type="text" name="bindingCola" [(ngModel)]="binding.cola" placeholder="q.auditoria" />
+        </div>
+        <div class="campo">
+          <label for="bd-rk">Routing key</label>
+          <input id="bd-rk" type="text" name="bindingRoutingKey" [(ngModel)]="binding.routingKey" placeholder="envio.# o #" />
+        </div>
+        <div class="acciones">
+          <button class="btn btn--primary" type="submit" [disabled]="ocupado">Crear binding</button>
+          <button class="btn btn--danger" type="button" [disabled]="ocupado" (click)="eliminarBinding()">Eliminar binding</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

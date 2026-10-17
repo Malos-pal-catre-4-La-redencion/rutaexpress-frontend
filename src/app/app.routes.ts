@@ -27,6 +27,13 @@ export const routes: Routes = [
       import('./features/catalogo/catalogo.component').then((m) => m.CatalogoComponent),
   },
   {
+    path: 'admin',
+    canActivate: [MsalGuard, roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./features/admin/admin.component').then((m) => m.AdminComponent),
+  },
+  {
     path: 'no-autorizado',
     component: NoAutorizadoComponent,
   },
