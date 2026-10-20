@@ -10,5 +10,5 @@ export const environment = {
     postLogoutRedirectUri: 'http://localhost:4200',
   },
   apiScope: 'api://b0361a22-65c8-4c6c-ac3a-767662d4a975/access_as_user',
-  apiUrl: 'http://localhost:8081/api/bff',
+  apiUrl: 'http://98.82.193.250:8081/api/bff',
 };
